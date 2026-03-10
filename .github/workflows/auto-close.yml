@@ -1,0 +1,16 @@
+name: Close wontfix issues
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  close-wontfix:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'wontfix')
+    steps:
+      - name: Close issue
+        run: |
+          gh issue close ${{ github.event.issue.number }} --repo ${{ github.repository }} --comment "This issue has been automatically closed because it is labeled as wontfix."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
